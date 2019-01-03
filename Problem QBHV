@@ -1,0 +1,31 @@
+////////////////////////////////////////
+// https://vn.spoj.com/problems/QBHV/
+////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+string s, res;
+int d = 0;
+
+
+int main()
+{
+    freopen("qbhv.inp","r",stdin);
+    freopen("qbhv.out","w",stdout);
+
+    getline(cin, s);
+
+    sort(s.begin(),s.end());
+
+    do
+    {
+        d ++;
+        res += s;
+        res += "\n";
+    } while (next_permutation(s.begin(),s.end()));
+
+    cout << d << endl << res;
+    return 0;
+}
