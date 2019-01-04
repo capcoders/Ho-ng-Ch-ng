@@ -1,0 +1,68 @@
+///////////////////////////////////////////////////////////
+/*Số lớn nhất
+Cho 2 số nguyên X=x1x2...xN và Y=y1y2...yM . Hãy tìm số Z = z1z2...zk (Z nhận được từ X và Y bằng cách xoá đi một số chữ số) lớn nhất .
+Ví dụ : X= 12345
+	Y= 435012
+Thì Z=45 (nhận được từ X bằng cách xoá đi x1 , x2 , x3 ; nhận được từ Y bằng cách xoá đi y2 ¬, y4 , y5 , y6)
+Input   : NUMBER.IN
+-	Dòng thứ nhất là X.
+-	Dòng thứ hai là Y.
+Ouput : NUMBER.OUT
+-	Dòng đầu ghi số Z.*/
+///////////////////////////////////////////////////////////
+
+#include <bits/stdc++.h>
+using namespace std;
+int n, m, F[10000][10000];
+string x, y, res;
+
+int main()
+{
+    freopen("number.inp","r",stdin);
+    freopen("number.out","w",stdout);
+
+    getline(cin, x);
+    getline(cin, y);
+
+    n = x.size();
+    m = y.size();
+    x = ' ' + x;
+    y = ' ' + y;
+
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            if (x[i] == y[j]){
+                F[i][j] = F[i-1][j-1]*10 + (int)(x[i]-48);
+            }
+            else
+            {
+                F[i][j] = max(F[i-1][j],F[i][j-1]);
+            }
+        }
+    }
+
+    while (F[n][m] > 0){
+        if (x[n] == y[m]){
+            res = x[n] + res;
+            n --;
+            m --;
+        }
+        else
+        {
+            if (F[n][m] == F[n-1][m]){
+                n --;
+            } else m --;
+        }
+    }
+
+    /*for (int i = 1; i <= x.size(); i ++){
+        for (int j = 1; j <= y.size(); j ++){
+            cout << F[i][j] << " ";
+        }
+        cout << endl;
+    }*/
+
+    cout << res;
+
+    return 0;
+}
