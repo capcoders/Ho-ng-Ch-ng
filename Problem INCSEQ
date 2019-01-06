@@ -1,0 +1,44 @@
+/////////////////////////////////
+//DÃY CON ĐƠN ĐIỆU TĂNG DÀI NHẤT
+/////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#define inf 10000000
+using namespace std;
+int n, jmax, A[100000], L[100000], T[100000];
+
+int main()
+{
+    freopen("LIQ.inp","r",stdin);
+    freopen("LIQ.out","w",stdout);
+
+    cin >> n;
+    for (int i = 1; i <= n; i ++){
+        cin >> A[i];
+    }
+
+    /////////////////////////////////
+
+    A[0] = -inf;
+    A[n+1] = inf;
+    L[n+1] = 1;
+    for (int i = n; i >= 0; i --){
+        jmax = n+1;
+        for (int j = i+1; j <= n+1; j ++){
+            if (A[i] < A[j] && L[j] > L[jmax]){
+                jmax = j;
+            }
+            L[i] = L[jmax] + 1;
+            T[i] = jmax;
+        }
+    }
+
+    /////////////////////////////////
+
+    int i = 0;
+    while (T[i] < n+1){
+        cout << A[T[i]] << " ";
+        i = T[i];
+    }
+}
