@@ -10,8 +10,8 @@ int n, jmax, A[100000], L[100000], T[100000];
 
 int main()
 {
-    freopen("LIQ.inp","r",stdin);
-    freopen("LIQ.out","w",stdout);
+    freopen("INCSEQ.inp","r",stdin);
+    freopen("INCSEQ.out","w",stdout);
 
     cin >> n;
     for (int i = 1; i <= n; i ++){
