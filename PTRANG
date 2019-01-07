@@ -1,0 +1,34 @@
+///////////////////////////////////////////////
+// https://vn.spoj.com/problems/PTRANG/
+///////////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#define inf 1000000000
+using namespace std;
+int n, l, d, S[100000], F[100000];
+
+
+int main() {
+    freopen("ptrang.inp","r",stdin);
+    freopen("ptrang.out","w",stdout);
+
+    cin >> n >> l;
+    for (int i = 1; i <= n; i ++){
+        cin >> d;
+        S[i] = S[i-1] + d;
+        F[i] = inf;
+    }
+
+    for (int i = 1; i <= n; i ++){
+        for (int j = 0; j <= i-1; j ++){
+            if (S[i]-S[j] <= l){
+                F[i] = min(F[i], max(F[j], l-S[i]+S[j]));
+            }
+        }
+    }
+
+    cout << F[n];
+
+    return 0;
+}
