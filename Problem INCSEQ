@@ -26,7 +26,7 @@ int main()
     for (int i = n; i >= 0; i --){
         jmax = n+1;
         for (int j = i+1; j <= n+1; j ++){
-            if (A[i] < A[j] && L[j] > L[jmax]){
+            if (A[i] < A[j] && > L[jmax] < L[j]){
                 jmax = j;
             }
             L[i] = L[jmax] + 1;
