@@ -1,0 +1,70 @@
+/////////////////////////////////////////////////////////////////////////////////////////
+// https://drive.google.com/file/d/146WWQoaIfMQmfk4Ic2Ha284kRoh8uSiV/view?usp=sharing
+/////////////////////////////////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <queue>
+#include <stdio.h>
+using namespace std;
+queue <long long> Q;
+long long i, n, m, s, f, u, v;
+long long A[10000][10000];
+long long T[10000];
+
+
+void enter()
+{
+    cin >> n >> m >> s >> f;
+    for (i = 1; i <= m; i ++){
+        cin >> u >> v;
+        A[u][v] = 1;
+        A[v][u] = 1;
+    }
+}
+
+void bfs()
+{
+    Q.push(s);
+    T[s] = -1;
+    while (!Q.empty()){
+        u = Q.front();
+        Q.pop();
+        for (v = 1; v <= n; v ++){
+            if (A[u][v] == 1 && T[v] == 0){
+                Q.push(v);
+                T[v] = u;
+            }
+        }
+    }
+}
+
+void result()
+{
+    cout << "From " << s << " we can visit : ";
+    for (i = 1; i <= n; i ++){
+        if (T[i] != 0){
+            cout << i << " ";
+        }
+    }
+    cout << "\nThe path from " << s << " to " << f << " : ";
+    if (T[f] == 0){
+        cout << "not found !!!";
+    }
+    else
+    {
+        while (s != f){
+            cout << f << " <- ";
+            f = T[f];
+        }
+        cout << s;
+    }
+}
+
+int main()
+{
+    freopen("bfs.inp","r",stdin);
+    freopen("bfs.out","w",stdout);
+    enter();
+    bfs();
+    result();
+}
