@@ -1,0 +1,34 @@
+/////////////////////////////////////////////
+//  https://vn.spoj.com/problems/AMSSEQ/
+/////////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+int n, k, res = 0;
+int A[10000], F[10000];  /// F[i] là số điểm lớn nhất khi dừng ở i
+
+int main()
+{
+    freopen("AMSSEQ.inp","r",stdin);
+    freopen("AMSSEQ.out","w",stdout);
+
+    cin >> n >> k;
+    for (int i = 1; i <= n; i ++){
+        cin >> A[i];
+    }
+
+    for (int i = 1; i <= n+1; i ++){
+        F[i] = -1e9;
+    }
+
+    for (int i = 1; i <= n; i ++){
+        for (int j = i-1; j >= 0 && j >= i-k; j --){
+            F[i] = max(F[i], F[j] + A[i]);
+        }
+        res = max(res, F[i]);
+    }
+
+    cout << res;
+    return 0;
+}
