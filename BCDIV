@@ -1,0 +1,42 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //https://vn.spoj.com/problems/BCDIV/
+    /*Thuật toán:
+    Gọi f[i][j] là chia i số vào n nhóm.
+
+    f[i][j]=f[i-1][j-1]+f[i-1][j]*j.
+    Khởi tạo f[0][0]=1.
+    Giải thích công thức trên:
+
+    Nếu đã chia được (i-1) số vào (j-1) nhóm -> bắt buộc phải chia số thứ i vào nhóm thứ j-> có f[i-1][j-1] cách
+    Nếu ta đã chia được (i-1) số vào j nhóm -> có j cách để cho số thứ i vào một nhóm bắt kì->có f[i-1][j]*j
+    Tổng cộng có f[i-1][j-1]+f[i-1][j]*j.*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+unsigned long long t, n, k, F[10000][10000];
+
+
+int main()
+{
+    freopen("BCDIV.inp","r",stdin);
+    freopen("BCDIV.out","w",stdout);
+
+    F[0][0] = 1;
+    for (int i = 1; i <= 25; i ++){
+        for (int j = 1; j <= 25; j ++){
+            F[i][j] = F[i-1][j-1] + F[i-1][j]*j;
+            //cout << F[i][j] << " ";
+        }
+        //cout << endl;
+    }
+
+    cin >> t;
+    for (int i = 1; i <= t; i ++){
+        cin >> n >> k;
+        cout << F[n][k] << endl;;
+    }
+
+    return 0;
+}
