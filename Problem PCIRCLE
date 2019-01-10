@@ -1,0 +1,95 @@
+/////////////////////////////////////////////////////////////
+//  https://vn.spoj.com/problems/PCIRCLE/
+//  Note : Wrong in n = {8, 9, 10}
+/////////////////////////////////////////////////////////////
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+long long n, d, X[100000], K[10000][10000];
+bool P[100000], C[100000];   // P la mang so nguyen to
+
+void Setup()
+{
+    P[0] = true;
+    P[1] = true;
+    int k;
+    for (int i = 2; i <= 4*n+1; i ++){
+        if (P[i] == false){
+            k = i;
+            while (k < 4*n+1){
+                k += i;
+                if (P[k] == false){
+                    P[k] = true;
+                }
+            }
+        }
+    }
+
+    ////////////////////////////////////////
+
+    X[1] = 1;
+    X[2*n+1] = 1;
+}
+
+bool Check(int k)
+{
+    if (P[k] == false){
+        return true;
+    }
+    return false;
+}
+
+void Count()
+{
+    d ++;
+    if (d <= 10000){
+        for (int i = 1; i <= 2*n; i ++){
+            K[d][i] = X[i];
+        }
+    }
+}
+
+void Try(int i)
+{
+    for (int j = 2; j <= 2*n; j ++){
+        if (C[j] == false){
+            X[i] = j;
+            if (Check(j+X[i-1]) == true){
+                if (i == 2*n){
+                    if (Check(X[2*n]+X[2*n+1]) == true){
+                        Count();
+                    }
+                }
+                else{
+                    C[j] = true;
+                    Try(i+1);
+                    C[j] = false;
+                }
+            }
+        }
+    }
+}
+
+void Output()
+{
+    cout << d << endl;
+    for (int i = 1; i <= d; i ++){
+        for (int j = 1; j <= 2*n; j ++){
+            cout << K[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    freopen("PCIRCLE.inp","r",stdin);
+    freopen("PCIRCLE.out","w",stdout);
+
+    cin >> n;
+    Setup();
+    Try(2);
+    Output();
+
+    return 0;
+}
