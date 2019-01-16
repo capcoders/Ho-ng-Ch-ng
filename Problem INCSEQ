@@ -42,3 +42,53 @@ int main()
         i = T[i];
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Cach 2
+
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+long long n, maxx, vt, A[100000], L[100000];
+
+int main()
+{
+    freopen("liq.inp","r",stdin);
+    freopen("liq.out","w",stdout);
+
+    cin >> n;
+    for (int i = 1; i <= n; i ++){
+        cin >> A[i];
+    }
+
+    /////////////////////////
+
+    maxx = 1;
+    for (int i = 1; i <= n; i ++){
+        L[i] = 1;
+        for (int j = 1; j <= i-1; j ++){
+            if (A[j] < A[i] && L[i] < L[j] + 1){
+                L[i] = L[j] + 1;
+                if (maxx < L[i]){
+                    maxx = L[i];
+                    vt = i;
+                }
+            }
+        }
+    }
+
+    /////////////////////////
+
+    cout << maxx << endl;  /// maxx la so phan tu cua day
+
+    cout << A[vt] << " ";
+    for (int i = vt; i >= 1; i --){
+        if (L[i] == maxx-1){
+            maxx --;
+            cout << A[i] << " ";
+        }
+    }
+
+    return 0;
+}
