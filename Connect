@@ -1,0 +1,65 @@
+//////////////////////////////
+/// use DFS algorithm
+//////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#include <queue>
+using namespace std;
+long long n, m, count = 0;
+bool A[10000][10000], Visit[10000];
+queue <long long> Q;
+
+void Input()
+{
+    long long u, v;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i ++){
+        cin >> u >> v;
+        A[u][v] = true;
+        A[v][u] = true;
+    }
+}
+
+void DFS(int k)
+{
+    Visit[k] = true;
+    Q.push(k);
+    for (int l = 1; l <= n; l ++){
+        if (A[k][l] == true && Visit[l] == false){
+            DFS(l);
+        }
+    }
+}
+
+void Output()
+{
+    long long x;
+    cout << "Connected Component " << count << ":" << endl;
+    while (!Q.empty()){
+        x = Q.front();
+        Q.pop();
+        cout << x << " ";
+    }
+    cout << endl;
+}
+
+void Process()
+{
+    for (int k = 1; k <= n; k ++){
+        if (Visit[k] == false){
+            count ++;
+            DFS(k);
+            Output();
+        }
+    }
+}
+
+int main()
+{
+    freopen("connect.inp", "r", stdin);
+    freopen("connect.out", "w", stdout);
+
+    Input();
+    Process();
+}
