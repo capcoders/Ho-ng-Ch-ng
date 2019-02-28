@@ -1,0 +1,197 @@
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+string s;
+int arr[10000], arr2[10000], X[10000], minSteps = 17;
+
+void Input()
+{
+    for (int i = 1; i <= 4; i ++){
+        getline(cin, s);
+        for (int j = 0; j < 4; j ++){
+            if (s[j] == 'b'){
+                arr[i*4-4+j+1] = 1;
+            }else{
+                arr[i*4-4+j+1] = 0;
+            }
+        }
+    }
+}
+
+void Switch(int i)
+{
+    switch (i){
+        case 1:
+            arr2[1] = abs(arr2[1]-1);
+            arr2[2] = abs(arr2[2]-1);
+            arr2[5] = abs(arr2[5]-1);
+            break;
+        case 2:
+            arr2[2] = abs(arr2[2]-1);
+            arr2[1] = abs(arr2[1]-1);
+            arr2[3] = abs(arr2[3]-1);
+            arr2[6] = abs(arr2[6]-1);
+            break;
+        case 3:
+            arr2[3] = abs(arr2[3]-1);
+            arr2[2] = abs(arr2[2]-1);
+            arr2[4] = abs(arr2[4]-1);
+            arr2[7] = abs(arr2[7]-1);
+            break;
+        case 4:
+            arr2[4] = abs(arr2[4]-1);
+            arr2[3] = abs(arr2[3]-1);
+            arr2[8] = abs(arr2[8]-1);
+            break;
+        case 5:
+            arr2[5] = abs(arr2[5]-1);
+            arr2[1] = abs(arr2[1]-1);
+            arr2[6] = abs(arr2[6]-1);
+            arr2[9] = abs(arr2[9]-1);
+            break;
+        case 6:
+            arr2[6] = abs(arr2[6]-1);
+            arr2[2] = abs(arr2[2]-1);
+            arr2[5] = abs(arr2[5]-1);
+            arr2[7] = abs(arr2[7]-1);
+            arr2[10] = abs(arr2[10]-1);
+            break;
+        case 7:
+            arr2[7] = abs(arr2[7]-1);
+            arr2[3] = abs(arr2[3]-1);
+            arr2[6] = abs(arr2[6]-1);
+            arr2[8] = abs(arr2[8]-1);
+            arr2[11] = abs(arr2[11]-1);
+            break;
+        case 8:
+            arr2[8] = abs(arr2[8]-1);
+            arr2[4] = abs(arr2[4]-1);
+            arr2[7] = abs(arr2[7]-1);
+            arr2[12] = abs(arr2[12]-1);
+            break;
+        case 9:
+            arr2[9] = abs(arr2[9]-1);
+            arr2[5] = abs(arr2[5]-1);
+            arr2[10] = abs(arr2[10]-1);
+            arr2[13] = abs(arr2[13]-1);
+            break;
+        case 10:
+            arr2[10] = abs(arr2[10]-1);
+            arr2[6] = abs(arr2[6]-1);
+            arr2[9] = abs(arr2[9]-1);
+            arr2[11] = abs(arr2[11]-1);
+            arr2[14] = abs(arr2[14]-1);
+            break;
+        case 11:
+            arr2[11] = abs(arr2[11]-1);
+            arr2[7] = abs(arr2[7]-1);
+            arr2[10] = abs(arr2[10]-1);
+            arr2[12] = abs(arr2[12]-1);
+            arr2[15] = abs(arr2[15]-1);
+            break;
+        case 12:
+            arr2[12] = abs(arr2[12]-1);
+            arr2[8] = abs(arr2[8]-1);
+            arr2[11] = abs(arr2[11]-1);
+            arr2[16] = abs(arr2[16]-1);
+            break;
+        case 13:
+            arr2[13] = abs(arr2[13]-1);
+            arr2[9] = abs(arr2[9]-1);
+            arr2[14] = abs(arr2[14]-1);
+            break;
+        case 14:
+            arr2[14] = abs(arr2[14]-1);
+            arr2[10] = abs(arr2[10]-1);
+            arr2[13] = abs(arr2[13]-1);
+            arr2[15] = abs(arr2[15]-1);
+            break;
+        case 15:
+            arr2[15] = abs(arr2[15]-1);
+            arr2[11] = abs(arr2[11]-1);
+            arr2[14] = abs(arr2[14]-1);
+            arr2[16] = abs(arr2[16]-1);
+            break;
+        case 16:
+            arr2[16] = abs(arr2[16]-1);
+            arr2[12] = abs(arr2[12]-1);
+            arr2[15] = abs(arr2[15]-1);
+            break;
+    }
+}
+
+void SetArr2()
+{
+    for (int i = 1; i <= 16; i ++){
+        arr2[i] = arr[i];
+    }
+}
+
+int CountStep()
+{
+    int cou = 0;
+    for (int i = 1; i <= 16; i ++){
+        if (X[i] == 1){
+            cou ++;
+        }
+    }
+    return cou;
+}
+
+void Compare()
+{
+    if (minSteps > CountStep()){
+        minSteps = CountStep();
+    }
+}
+
+void CheckResult()
+{
+    int cou = 0;
+    for (int i = 1; i <= 16; i ++){
+        if (arr2[i] == 1){
+            cou ++;
+        }else{
+            cou --;
+        }
+    }
+    if (cou == 16 || cou == -16){
+        Compare();
+    }
+}
+
+void CheckSwitch()
+{
+    SetArr2();
+    for (int i = 1; i <= 16; i ++){
+        if (X[i] == 1){     /// 1 la bien doi
+            Switch(i);
+        }
+    }
+    CheckResult();
+}
+
+void Try(int i)
+{
+    for (int j = 0; j <= 1; j ++){
+        X[i] = j;
+        if (i == 16){
+            CheckSwitch();
+        }else{
+            Try(i+1);
+        }
+    }
+}
+
+int main()
+{
+    Input();
+    Try(1);
+    if (minSteps != 17){
+        cout << minSteps;
+    }else{
+        cout << "Impossible";
+    }
+    return 0;
+}
