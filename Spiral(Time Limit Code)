@@ -123,8 +123,11 @@
         }
     }
 
-    void Input()
+    int main()
     {
+        freopen("spiral.inp", "r", stdin);
+        freopen("spiral.out", "w", stdout);
+
         cin >> t;
         for (int i = 1; i <= t; i ++){
             cin >> n >> x >> y;
@@ -139,19 +142,11 @@
                 QY.pop();
                 Spread(a, b);
             }
+            B[startX][startY] = 0;
+            if (B[finishX][finishY] >= 0){
+                cout << B[finishX][finishY] << endl;
+            }else{
+                cout << -1 << endl;
+            }
         }
-    }
-
-    void Output()
-    {
-        cout << B[finishX][finishY];
-    }
-
-    int main()
-    {
-        freopen("SPIRAL.inp", "r", stdin);
-        freopen("SPIRAL.out", "w", stdout);
-
-        Input();
-        Output();
     }
