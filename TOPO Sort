@@ -1,0 +1,64 @@
+///////////////////////////////////////////////////////////////////
+///////////////////////////  TOPO SORT  ///////////////////////////
+///////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+#include <queue>
+using namespace std;
+typedef pair <int,int> ii;
+int n, m;
+bool A[10000][10000];
+ii Deg[10000];
+
+void Setup()
+{
+    cin >> n >> m;
+    int u, v;
+    for (int i = 1; i <= m; i ++){
+        cin >> u >> v;
+        Deg[v].second ++;
+        A[u][v] = true;
+    }
+    for (int i = 1; i <= n; i ++){
+        Deg[i].first = i;
+    }
+}
+
+struct compare{
+    bool operator()(ii const& a, ii const& b){
+        return a.second > b.second;
+    }
+};
+
+void Process()
+{
+    priority_queue <ii, vector<ii>, compare > P;
+    for (int i = 1; i <= n; i ++){
+        P.push(Deg[i]);
+    }
+    /*while (P.size()){
+        cout << P.top().first << " " << P.top().second << endl;
+        P.pop();
+    }*/
+    while (P.size()){
+        ii x = P.top();
+        cout << x.first << endl;
+        P.pop();
+        for (int i = 1; i <= n; i ++){
+            if (A[i][x.first] == true){
+                A[i][x.first] = false;
+                //  -- Deg[i];
+            }
+        }
+    }
+}
+
+int main()
+{
+    freopen("TOPO2509.inp", "r", stdin);
+    freopen("TOPO2509.out", "w", stdout);
+
+    Setup();
+    Process();
+}
