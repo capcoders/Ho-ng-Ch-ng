@@ -12,8 +12,6 @@ void Input()
 
 void Initialize(int node, int first, int last)
 {
-    /// Ta biểu diễn cây bằng một mảng M[1,2∗2[logN]+1]
-    /// với M[i] là vị trí có giá trị nhỏ nhất trong đoạn mà nút i quản lý.
     if (first == last){
         M[node] = A[first];
         return;
