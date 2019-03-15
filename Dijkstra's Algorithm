@@ -1,0 +1,75 @@
+#include <iostream>
+#include <stdio.h>
+#include <queue>
+#include <vector>
+#define INF 1e9
+#define maxN 100000
+using namespace std;
+typedef pair<int,int> data;
+vector <data> A[maxN];
+priority_queue <data, vector<data>, greater<data> > PQ;
+int n, m, start, finish;
+int D[maxN], Trace[maxN];
+
+void readData()
+{
+    int p, q, w;
+    cin >> n >> m >> start >> finish;
+    for (int i = 1; i <= m; i ++){
+        cin >> p >> q >> w;
+        A[p].push_back(data(w, q));
+        A[q].push_back(data(w, p));
+    }
+}
+
+void initialize()
+{
+    for (int i = 1; i <= n; i ++){
+        A[i].push_back(data(0, 0));
+        D[i] = INF;
+    }
+    D[start] = 0;
+    PQ.push(data(0, 1));
+}
+
+void dijkstra()
+{
+    int u, v, du, uv;
+    while (PQ.size()){
+        u = PQ.top().second;
+        du = PQ.top().first;
+        PQ.pop();
+
+        if (du != D[u]){ continue; }
+
+        for (int i = 0; v = A[u][i].second; i ++){
+            uv = A[u][i].first;
+            if (D[v] > du+uv){
+                D[v] = du+uv;
+                Trace[v] = u;
+                PQ.push(data(D[v], v));
+            }
+        }
+    }
+}
+
+void writeData()
+{
+    cout << "The shortest path between two points: " << D[finish] << endl;
+    while (finish > 1){
+        cout << finish << " <-- ";
+        finish = Trace[finish];
+    }
+    cout << start;
+}
+
+int main()
+{
+    freopen("dijkstra.inp", "r", stdin);
+    freopen("dijkstra.out", "w", stdout);
+
+    readData();
+    initialize();
+    dijkstra();
+    writeData();
+}
