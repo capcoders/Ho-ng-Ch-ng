@@ -1,0 +1,89 @@
+///////////////////////////////////////////////////////////////
+//////////////https://vn.spoj.com/problems/FLOYD///////////////
+///////////////////////////////////////////////////////////////
+    #include <iostream>
+    #include <stdio.h>
+    #include <queue>
+    #define INF 100000
+    using namespace std;
+    int n, m, k, A[10000][10000], Trace[10000][10000];
+    queue <int> Q;
+
+    void readData1()
+    {
+        int p, q, w;
+        cin >> n >> m >> k;
+        for (int i = 1; i <= m; i ++){
+            cin >> p >> q >> w;
+            A[p][q] = w;
+            A[q][p] = w;
+        }
+    }
+
+    void Initialize()
+    {
+        for (int i = 1; i <= n; i ++){
+            for (int j = 1; j <= n; j ++){
+                if (i != j){
+                    if (A[i][j] == 0){
+                        A[i][j] = INF;
+                    }
+                }
+            }
+        }
+        /////////////////////////////////////
+    }
+
+    void Process()
+    {
+        for (int k = 1; k <= n; k ++){
+            for (int u = 1; u <= n; u ++){
+                for (int v = 1; v <= n; v ++){
+                    if (A[u][v] > A[u][k] + A[k][v]){
+                        A[u][v] = A[u][k] + A[k][v];
+                        Trace[u][v] = k;
+                    }
+                }
+            }
+        }
+    }
+
+    void readData2()
+    {
+        int c, u, v;
+        for (int i = 1; i <= k; i ++){
+            cin >> c >> u >> v;
+            if (c == 0){
+                cout << A[u][v];
+            }else{
+                if (A[u][v] == INF){
+                    cout << "NOT FOUND!";
+                }
+                else{
+                    Q.push(u);
+                    while (Trace[u][v] > 0){
+                        Q.push(Trace[u][v]);
+                        u = Trace[u][v];
+                    }
+                    Q.push(v);
+                    cout << Q.size() << " ";
+                    while (Q.size()){
+                        cout << Q.front() << " ";
+                        Q.pop();
+                    }
+                }
+            }
+            cout << endl;
+        }
+    }
+
+    int main()
+    {
+        freopen("floyd.inp", "r", stdin);
+        freopen("floyd.out", "w", stdout);
+
+        readData1();
+        Initialize();
+        Process();
+        readData2();
+    }
