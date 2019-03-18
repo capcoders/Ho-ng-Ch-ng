@@ -1,23 +1,37 @@
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #define INF 100
 using namespace std;
-int bestWay = INF, Clock[1000], X[1000];
+int bestWay = INF, Clock[100], A[100], X[100];
 
 void readData()
 {
-    for (int i = 1; i <= 9; i ++){ cin >> Clock[i]; }
+    string s;
+    getline(cin, s);
+    Clock[1] = (int)(s[0]-48);
+    Clock[2] = (int)(s[1]-48);
+    Clock[3] = (int)(s[2]-48);
+    getline(cin, s);
+    Clock[4] = (int)(s[0]-48);
+    Clock[5] = (int)(s[1]-48);
+    Clock[6] = (int)(s[2]-48);
+    getline(cin, s);
+    Clock[7] = (int)(s[0]-48);
+    Clock[8] = (int)(s[1]-48);
+    Clock[9] = (int)(s[2]-48);
 }
 
-void writeData()
+void Reset()
 {
-    for (int i = 1; i <= 9; i ++){ cout << X[i] << " "; }
-    cout << endl;
+    for (int i = 1; i <= 9; i ++){
+        A[i] = Clock[i];
+    }
 }
 
 void Turn(int i)
 {
-    Clock[i] = (Clock[i] + 1) % 4;
+    A[i] = (A[i] + 1) % 4;
 }
 
 void Switch(int i)
@@ -53,7 +67,6 @@ void Switch(int i)
             Turn(8);
             break;
         case 6:
-            //3 6 9
             Turn(3);
             Turn(6);
             Turn(9);
@@ -89,12 +102,15 @@ void checkSwitch()
 
 void checkResult()
 {
-    int count = 0;
+    int count1 = 0, count2 = 0;
     for (int i = 1; i <= 9; i ++){
-        if (Clock[i] == 0) { count ++; }
+        if (A[i] == 0) count1 ++;
     }
-    if (count == 9){
-
+    if (count1 == 9){
+        for (int i = 1; i <= 9; i ++){
+            if (X[i] == 1) count2 ++;
+        }
+        if (count2 < bestWay) bestWay = count2;
     }
 }
 
@@ -103,7 +119,7 @@ void Try(int i)
     for (int j = 0; j <= 1; j ++){
         X[i] = j;
         if (i == 9){
-            //writeData();
+            Reset();
             checkSwitch();
             checkResult();
         }
@@ -120,4 +136,5 @@ int main()
 
     readData();
     Try(1);
+    cout << bestWay;
 }
