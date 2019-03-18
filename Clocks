@@ -107,7 +107,7 @@ void Try(int i)
             checkSwitch();
             checkResult();
         }
-        }else{
+        else{
             Try(i+1);
         }
     }
