@@ -1,0 +1,90 @@
+/////////http://ntucoder.net/Problem/Details/1186/////////
+//////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#include <queue>
+#include <vector>
+#define INF 1e9
+#define maxN 1000000
+using namespace std;
+typedef pair <int, int> ii;
+int n, m, D[maxN];
+vector <ii> A[maxN];
+priority_queue <ii, vector<ii>, greater<ii> > PQ;
+
+void readData()
+{
+    int pointID, x;
+    cin >> n >> m;
+    pointID = -1;
+    for (int i = 1; i <= n; i ++){
+        pointID ++;
+        for (int j = 1; j < m; j ++){
+            pointID ++;
+            cin >> x;
+            A[pointID].push_back(ii(x, pointID+1));
+            A[pointID+1].push_back(ii(x, pointID));
+        }
+    }
+    pointID = 0;
+    for (int i = 1; i < n; i ++){
+        for (int j = 1; j <= m; j ++){
+            pointID ++;
+            cin >> x;
+            A[pointID].push_back(ii(x, pointID+m));
+             A[pointID+m].push_back(ii(x, pointID));
+        }
+    }
+}
+
+void Initialize()
+{
+    for (int i = 1; i <= n*m; i ++) A[i].push_back(ii(0, 0));
+    for (int i = 1; i <= n*m; i ++) D[i] = INF;
+    D[1] = 0;      // Super Mario in the basement[1][1]
+    PQ.push(ii(0, 1));
+}
+
+void Dijkstra()
+{
+    int u, v, du, uv;
+
+    while (PQ.size()){
+        u = PQ.top().second;
+        du = PQ.top().first;
+        PQ.pop();
+        if (du != D[u]) continue;
+
+        for (int i = 0; v = A[u][i].second; i ++){
+            uv = A[u][i].first;
+            if (D[v] > du+uv) {
+                D[v] = du+uv;
+                PQ.push(ii(D[v], v));
+            }
+        }
+    }
+}
+
+void writeData()
+{
+    /*for (int i = 1; i <= n*m; i ++){
+        cout << i << "\t";
+        for (int j = 0; j < A[i].size(); j ++){
+            cout << A[i][j].first << " ";
+        }
+        cout << endl;
+    }*/
+    cout << D[n*m];
+}
+
+int main()
+{
+    freopen("MARIO2.inp", "r", stdin);
+    //freopen("MARIO2.out", "w", stdout);
+
+    readData();
+    Initialize();
+    Dijkstra();
+    writeData();
+}
