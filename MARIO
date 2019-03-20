@@ -40,8 +40,10 @@ void readData()
 
 void Initialize()
 {
-    for (int i = 1; i <= n*m; i ++) A[i].push_back(ii(0, 0));
-    for (int i = 1; i <= n*m; i ++) D[i] = INF;
+    for (int i = 1; i <= n*m; i ++){
+        A[i].push_back(ii(0, 0));
+        D[i] = INF;
+    }
     D[1] = 0;      // Super Mario in the basement[1][1]
     PQ.push(ii(0, 1));
 }
