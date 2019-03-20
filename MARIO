@@ -33,7 +33,7 @@ void readData()
             pointID ++;
             cin >> x;
             A[pointID].push_back(ii(x, pointID+m));
-             A[pointID+m].push_back(ii(x, pointID));
+            A[pointID+m].push_back(ii(x, pointID));
         }
     }
 }
