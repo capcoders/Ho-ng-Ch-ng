@@ -1,0 +1,139 @@
+// https://nguyenvanhieu.vn/cay-tim-kiem-nhi-phan-binary-search-tree/
+
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+int n;
+int A[10000];
+
+typedef struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+} node_t;
+
+void Free(node_t* root)
+{
+    if (root == NULL)
+        return;
+    Free(root->left);
+    Free(root->right);
+    Free(root);
+}
+
+int LeftOf(const int value, const node_t* root)
+{
+    // không cho phép giá trị trùng lặp trong cây BST
+    return (value < (root->data));
+    // cho phép giá trị trùng lặp trong cây BST
+    //return value <= root-> data;
+}
+
+int RightOf(const int value, const node_t* root)
+{
+    return (value > (root->data));
+}
+
+node_t* Insert(node_t* root, const int value)
+{
+    // Nếu Node hiện tại = NULL, đó là vị trí cần thêm. Thêm vào BST và kết thúc
+    if (root == NULL){
+        node_t* node = (node_t*)malloc(sizeof(node_t));
+        node->left  = NULL;
+        node->right = NULL;
+        node->data = value;
+        return node;
+    }
+    // Nếu giá trị cần thêm < giá trị root hiện tại, gọi đệ quy Insert vào cây con bên trái
+    // Nếu giá trị cần thêm > giá trị root hiện tại, gọi đệ quy Insert vào cây con bên phải
+    if (LeftOf(value, root))
+        root->left = Insert(root->left, value);
+    else if (RightOf(value, root))
+        root->right = Insert(root->right, value);
+    return root;
+}
+
+bool Search(const node_t* root, int value)
+{
+    // Nếu tìm đến hết cây(Node đó = NULL) mà không xảy ra (1), trả về false và kết thúc
+    if (root == NULL)
+        return false;
+    // Nếu Node hiện tại có giá trị = giá trị cần tìm, trả về true và kết thúc
+    if (root->data == value)
+        return true;
+    // Nếu Node hiện tại có giá trị > giá trị cần tìm, gọi đệ quy tìm ở cây con bên trái
+    else if (LeftOf(value, root))
+        return Search(root->left, value);
+    // Nếu Node hiện tại có giá trị < giá trị cần tìm, gọi đệ quy tìm ở cây con bên phải
+    else if (RightOf(value, root))
+        return Search(root->right, value);
+}
+
+int LeftMostChild(const node_t* root)
+{
+    while (root->left != NULL)
+        root = root->left;
+    return root->data;
+}
+
+int RightMostChild(const node_t* root)
+{
+    while (root->right != NULL)
+        root = root->right;
+    return root->data;
+}
+
+node_t* Delete(node_t* root, int value)
+{
+    // Tìm Node của con trái nhất(giả sử nó là leftmost) của cây con bên phải của Node cần xóa
+    // Cập nhật giá trị của Node cần xóa = giá trị của Node leftmost
+    // Gọi đệ quy hàm Delete xóa Node leftmost khỏi BST
+    if (root == NULL)
+        return root;
+    if (LeftOf(value, root))
+        root->left = Delete(root->left, value);
+    else if (RightOf(value, root))
+        root->right = Delete(root->right, value);
+    else{
+        // root->data == value, xóa node này
+        if (root->left == NULL){
+            node_t* newRoot = root->right;
+            Free(root);
+            return newRoot;
+        }
+        if (root->right == NULL){
+            node_t* newRoot = root->left;
+            Free(root);
+            return newRoot;
+        }
+        root->data = LeftMostChild(root->right);
+        root->right = Delete(root->right, root->data);
+    }
+    return root;
+}
+
+void PreOther(node_t* root)
+{
+    if (root != NULL){
+        printf("%d ", root->data);
+        PreOther(root->left);
+        PreOther(root->right);
+    }
+}
+
+int main()
+{
+    freopen("minimumElementInBST.inp", "r", stdin);
+
+    node_t* root = NULL;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i ++){
+        scanf("%d", &A[i]);
+        root = Insert(root, A[i]);
+    }
+
+    PreOther(root);
+
+    return 0;
+}
